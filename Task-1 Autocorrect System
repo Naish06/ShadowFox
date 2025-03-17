@@ -1,0 +1,32 @@
+pip install pyspellchecker
+from spellchecker import SpellChecker
+
+def autocorrect_text(input_text):
+    spell = SpellChecker()
+    words = input_text.split()
+    corrected_words = []
+    for word in words:
+        if word in spell.unknown([word]):
+            corrected_word = spell.correction(word)
+            corrected_words.append(corrected_word)
+            print(f"Misspelled word: '{word}' -> Suggested correction: '{corrected_word}'")
+        else:
+            corrected_words.append(word)
+    corrected_text = " ".join(corrected_words)
+    return corrected_text
+
+def main():
+    print("Autocorrect Keyboard System")
+    print("Type your text (or 'exit' to quit):")
+
+    while True:
+        user_input = input("> ")
+        if user_input.lower() == "exit":
+            print("Exiting the autocorrect system. Goodbye!")
+            break
+        corrected_text = autocorrect_text(user_input)
+        print("Corrected Text:", corrected_text)
+        print()
+
+if __name__ == "__main__":
+    main()
