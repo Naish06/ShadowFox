@@ -1,21 +1,14 @@
 # ShadowFox
 
-Task - 1 Autocorrect System
+__TASK - 1 AUTOCORRECT SYSTEM__
+<br> <br>
 The Autocorrect Keyboard System is a simple Python-based tool that automatically corrects misspelled words in user input. It utilizes the pyspellchecker library to identify and suggest corrections for misspelled words, improving the overall typing experience.
 
 To use this project, install the necessary dependency in Google Colab:
 
-pip install pyspellchecker
+> pip install pyspellchecker
 
 Run the Python script and enter text. If any word is misspelled, the system will suggest a correction.
-
-Sample:
-Autocorrect Keyboard System
-Type your text (or 'exit' to quit):
-> Helo ther
-Misspelled word: 'Helo' -> Suggested correction: 'Hello'
-Misspelled word: 'ther' -> Suggested correction: 'there'
-Corrected Text: Hello there
 
 Code Workflow:
 1. User Input: The program waits for user input via the command line.
@@ -27,11 +20,13 @@ Code Workflow:
 7. Exit Option: The user can exit by typing "exit".
 
 Libraries Used:
+<br>
 pyspellchecker --> used for spell checking and corrections
-
-
-
-Task - 2 Store Sales and Profit Analysis
+<br>
+<br>
+<br>
+__TASK - 2 STORE SALES AND PROFIT ANALYSIS__
+<br> <br>
 This Python script is designed to analyze sales and profit performance from a retail dataset. It provides valuable insights into sales trends, profitability, top-performing product categories, and customer segment contributions. The goal is to assist businesses in making data-driven decisions to optimize inventory, pricing strategies, and marketing efforts.
 
 Features:
@@ -43,9 +38,9 @@ Features:
 6. Sales-to-Profit Ratio by Category: Assesses efficiency and profitability across different product categories.
 7. Customer Segment Performance: Analyzes total sales and profit contributions from each customer segment.
 
-Ensure you have Python installed along with the following libraries:
+Ensure you have the following libraries installed:
 
-pip install pandas plotly.express
+> pip install pandas plotly.express
 
 How to Use:
 1. Upload the Dataset:
@@ -66,26 +61,8 @@ Evaluates customer segment profitability.
 Uses Plotly to generate interactive line plots for sales and profit trends.
 Monthly sales and profit trends are plotted using Plotly’s interactive line charts.
 
-Sample:
-===== Monthly Sales Trends =====
-Order Date
-2023-01-31    10000.50
-2023-02-28    12050.75
-...
-
-===== Top Performing Categories =====
-Category
-Technology       50000.30
-Furniture        40000.20
-...
-
-===== Customer Segment Performance =====
-                Sales   Profit
-Consumer    120000.00  15000.00
-Corporate    90000.00  12000.50
-...
-
 Libraries Used:
+<br>
 pandas –-> For data manipulation and analysis.
 
 plotly.express –-> For creating interactive visualizations.
