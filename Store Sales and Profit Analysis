@@ -1,0 +1,66 @@
+import pandas as pd
+import plotly.express as px
+
+from google.colab import files
+uploaded = files.upload()
+
+file_name = list(uploaded.keys())[0]
+data = pd.read_csv(file_name, encoding='ISO-8859-1')
+
+if 'Order Date' in data.columns:
+    data['Order Date'] = pd.to_datetime(data['Order Date'], errors='coerce')
+
+data.fillna(method='ffill', inplace=True)
+
+if 'Order Date' in data.columns and 'Sales' in data.columns:
+    monthly_sales = data.resample('M', on='Order Date')['Sales'].sum()
+    print("\n===== Monthly Sales Trends =====")
+    print(monthly_sales)
+    fig = px.line(monthly_sales, title='Monthly Sales Trends')
+    fig.show()
+
+if 'Category' in data.columns and 'Sales' in data.columns:
+    category_sales = data.groupby('Category')['Sales'].sum().sort_values(ascending=False)
+    print("\n===== Top Performing Categories =====")
+    print(category_sales)
+
+if 'Sub-Category' in data.columns and 'Sales' in data.columns:
+    subcategory_sales = data.groupby('Sub-Category')['Sales'].sum().sort_values(ascending=False)
+    print("\n===== Top Performing Sub-Categories =====")
+    print(subcategory_sales)
+
+if 'Order Date' in data.columns and 'Profit' in data.columns:
+    monthly_profit = data.resample('M', on='Order Date')['Profit'].sum()
+    print("\n===== Monthly Profit Trends =====")
+    print(monthly_profit)
+
+    # Plot Monthly Profit Trends
+    fig = px.line(monthly_profit, title='Monthly Profit Trends')
+    fig.show()
+
+if 'Category' in data.columns and 'Profit' in data.columns:
+    category_profit = data.groupby('Category')['Profit'].sum().sort_values(ascending=False)
+    print("\n===== Most Profitable Categories =====")
+    print(category_profit)
+
+if 'Sub-Category' in data.columns and 'Profit' in data.columns:
+    subcategory_profit = data.groupby('Sub-Category')['Profit'].sum().sort_values(ascending=False)
+    print("\n===== Most Profitable Sub-Categories =====")
+    print(subcategory_profit)
+
+if 'Segment' in data.columns and 'Profit' in data.columns:
+    segment_profit = data.groupby('Segment')['Profit'].sum().sort_values(ascending=False)
+    print("\n===== Profitability by Customer Segment =====")
+    print(segment_profit)
+
+if 'Category' in data.columns and 'Sales' in data.columns and 'Profit' in data.columns:
+    # Avoid division by zero
+    data['Sales_to_Profit_Ratio'] = data['Sales'] / data['Profit'].replace(0, float('nan'))
+    category_ratio = data.groupby('Category')['Sales_to_Profit_Ratio'].mean().sort_values(ascending=False)
+    print("\n===== Sales-to-Profit Ratio by Category =====")
+    print(category_ratio)
+
+if 'Segment' in data.columns and 'Sales' in data.columns and 'Profit' in data.columns:
+    segment_performance = data.groupby('Segment').agg({'Sales': 'sum', 'Profit': 'sum'})
+    print("\n===== Customer Segment Performance =====")
+    print(segment_performance)
