@@ -1,32 +1,57 @@
-pip install pyspellchecker
+import time
 from spellchecker import SpellChecker
+import random
 
-def autocorrect_text(input_text):
-    spell = SpellChecker()
+def autocorrect_text_original(input_text):
+    spell = SpellChecker()  # initialized every call (slower)
     words = input_text.split()
     corrected_words = []
     for word in words:
         if word in spell.unknown([word]):
             corrected_word = spell.correction(word)
             corrected_words.append(corrected_word)
-            print(f"Misspelled word: '{word}' -> Suggested correction: '{corrected_word}'")
         else:
             corrected_words.append(word)
-    corrected_text = " ".join(corrected_words)
-    return corrected_text
+    return " ".join(corrected_words)
 
-def main():
-    print("Autocorrect Keyboard System")
-    print("Type your text (or 'exit' to quit):")
+spell = SpellChecker()  # initialized once (faster)
+correction_cache = {}
 
-    while True:
-        user_input = input("> ")
-        if user_input.lower() == "exit":
-            print("Exiting the autocorrect system. Goodbye!")
-            break
-        corrected_text = autocorrect_text(user_input)
-        print("Corrected Text:", corrected_text)
-        print()
+def autocorrect_text_optimized(input_text):
+    words = input_text.split()
+    corrected_words = []
+
+    for word in words:
+        if word in correction_cache:
+            corrected_word = correction_cache[word]
+        else:
+            if word in spell.unknown([word]):
+                corrected_word = spell.correction(word)
+                correction_cache[word] = corrected_word
+            else:
+                corrected_word = word
+                correction_cache[word] = word
+        corrected_words.append(corrected_word)
+
+    return " ".join(corrected_words)
+
+def benchmark(func, test_sentences):
+    start = time.time()
+    for sentence in test_sentences:
+        func(sentence)
+    end = time.time()
+    avg_latency = (end - start) / len(test_sentences)
+    return avg_latency
 
 if __name__ == "__main__":
-    main()
+    words = ["helo", "wrld", "pythn", "speling", "eror", "optimzation", "benchmrk"]
+    test_sentences = [" ".join(random.choices(words, k=10)) for _ in range(500)]
+
+    
+    avg_latency_original = benchmark(autocorrect_text_original, test_sentences)
+    avg_latency_optimized = benchmark(autocorrect_text_optimized, test_sentences)
+
+    print("=== Autocorrect Benchmark Results ===")
+    print(f"Original Avg Latency:   {avg_latency_original:.4f} seconds")
+    print(f"Optimized Avg Latency:  {avg_latency_optimized:.4f} seconds")
+    print(f"Performance Improvement: {(1 - avg_latency_optimized / avg_latency_original) * 100:.2f}%")
